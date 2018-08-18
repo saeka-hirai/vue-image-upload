@@ -37,7 +37,7 @@ export default {
   props: {
     acceptType: {
       type: String,
-      default: 'image/jpeg image/png image/gif'
+      default: 'image/*'
     },
     uploadFieldName: {
       type: String,
