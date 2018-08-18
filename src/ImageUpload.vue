@@ -3,7 +3,7 @@
     :class="{'hover-style': !isSelected}"
     class="dropbox">
     <input
-      v-if="!isSelected && !shouldReset"
+      v-if="!isSelected && !mustReset"
       :name="uploadFieldName"
       :accept="acceptType"
       type="file"
@@ -46,7 +46,7 @@ export default {
   },
   data() {
     return {
-      shouldReset: false,
+      mustReset: false,
       imageUrl: '',
       file: null
     };
@@ -63,9 +63,11 @@ export default {
     reset() {
       this.file = null;
       this.imageUrl = '';
-      this.shouldReset = true;
+
+      // remove file by rerender input element
+      this.mustReset = true;
       this.$nextTick(() => {
-        this.shouldReset = false;
+        this.mustReset = false;
       });
     },
     changeFile({ name, files }) {
