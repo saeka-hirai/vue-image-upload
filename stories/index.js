@@ -4,5 +4,5 @@ import ImageUpload from '../src/ImageUpload.vue';
 
 storiesOf('ImageUpload').add('single use', () => ({
   components: { ImageUpload },
-  template: '<image-upload />'
+  template: '<div id="container"><image-upload /></div>'
 }));

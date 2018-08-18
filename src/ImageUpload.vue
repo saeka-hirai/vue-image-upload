@@ -1,33 +1,32 @@
 <template>
-  <div id="app">
-    <div class="container">
-      <div class="dropbox">
-        <input
-          v-if="!isSelected && !shouldReset"
-          :name="uploadFieldName"
-          :accept="acceptType"
-          type="file"
-          class="input-file"
-          @change="changeFile($event.target)">
-        <p v-if="!isSelected">
-          Drag image or click
-        </p>
-        <div v-else>
-          <div>
-            <img
-              v-if="imageUrl"
-              :src="imageUrl"
-              class="preview"
-              alt="preview">
-          </div>
-          <div
-            class="button button-usuallyBlue w-250 fs-14 mt-20 mb-50"
-            @click.stop="reset">cancel
-          </div>
-          <div
-            class="button button-usuallyBlue w-250 fs-14 mt-20 mb-50"
-            @click.stop="upload">upload</div>
-        </div>
+  <div
+    :class="{'hover-style': !isSelected}"
+    class="dropbox">
+    <input
+      v-if="!isSelected && !shouldReset"
+      :name="uploadFieldName"
+      :accept="acceptType"
+      type="file"
+      class="input-file"
+      @change="changeFile($event.target)">
+    <p v-if="!isSelected">
+      Drag image or click
+    </p>
+    <div v-else>
+      <div class="preview">
+        <img
+          v-if="imageUrl"
+          :src="imageUrl"
+          alt="preview">
+      </div>
+      <div class="buttons">
+        <a
+          class="button"
+          @click="reset">cancel
+        </a>
+        <a
+          class="button"
+          @click="upload">upload</a>
       </div>
     </div>
   </div>
@@ -76,17 +75,17 @@ export default {
       this.file = files[0];
       this.readUrl();
     },
-    upload() {
-      const formData = new FormData();
-      formData.append(this.uploadFieldName, this.file, this.file.name);
-      this.$emit('upload', formData);
-    },
     readUrl() {
       const reader = new FileReader();
       reader.onload = e => {
         this.imageUrl = e.target.result;
       };
       reader.readAsDataURL(this.file);
+    },
+    upload() {
+      const formData = new FormData();
+      formData.append(this.uploadFieldName, this.file, this.file.name);
+      this.$emit('upload', formData);
     }
   }
 };
@@ -96,29 +95,59 @@ export default {
 .dropbox {
   outline: 2px dashed grey;
   outline-offset: -10px;
-  background: lightcyan;
   color: dimgray;
-  padding: 10px 10px;
-  min-height: 200px;
+  min-height: 400px;
+  max-height: 400px;
+  min-width: 400px;
+  max-width: 400px;
   position: relative;
-  cursor: pointer;
 }
+
+.hover-style:hover {
+  background-color: #f3fffc;
+}
+
 .input-file {
   opacity: 0;
   width: 100%;
-  height: 200px;
+  height: 100%;
   position: absolute;
   cursor: pointer;
 }
-.dropbox:hover {
-  background: lightblue;
-}
+
 .dropbox p {
   font-size: 1.2em;
   text-align: center;
   padding: 50px 0;
 }
+
 .preview {
-  max-height: 200px;
+  max-height: 250px;
+  max-width: 250px;
+  padding-top: 30px;
+  margin: 0 auto;
+}
+
+.preview img {
+  height: 100%;
+  width: 100%;
+}
+
+.buttons {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.button {
+  width: 50px;
+  padding: 5px 30px;
+  cursor: pointer;
+  border-radius: 5px;
+  -webkit-transition: background 0.5s;
+  transition: background 0.5s;
+}
+
+.button:hover {
+  background: #ececec;
 }
 </style>
